@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
 
-public class UserPrinciples implements UserDetails {
+public class UserPrincipal implements UserDetails {
     private User user;
 
-    public UserPrinciples(User user) {
+    public UserPrincipal(User user) {
         this.user = user;
     }
 
