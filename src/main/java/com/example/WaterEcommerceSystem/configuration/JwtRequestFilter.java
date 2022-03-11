@@ -1,8 +1,9 @@
 package com.example.WaterEcommerceSystem.configuration;
 
-import com.auth0.jwt.exceptions.TokenExpiredException;
+
 import com.example.WaterEcommerceSystem.service.JwtService;
 import com.example.WaterEcommerceSystem.util.JwtUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,12 +29,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        final String header=request.getHeader("Authorization");
+        String requestHeaderToken= request.getHeader("Authorization");
 
         String jwtToken = null;
         String username =null;
-        if (header !=null && header.startsWith("Bearer")){
-            jwtToken=header.substring(7);
+        if (requestHeaderToken !=null && requestHeaderToken.startsWith("Bearer ")){
+            jwtToken=  requestHeaderToken.substring(7);
 
             try{
                 username=jwtUtil.getUserNameFromToken(jwtToken);
@@ -41,7 +42,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             }catch (IllegalArgumentException e){
                 System.out.println("unable to get jwt token");
-            }catch (TokenExpiredException e){
+            }catch (ExpiredJwtException e){
                 System.out.println("Jwt token is expired");
             }
         }else {
