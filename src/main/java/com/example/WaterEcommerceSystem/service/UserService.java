@@ -5,6 +5,8 @@ import com.example.WaterEcommerceSystem.module.User;
 import com.example.WaterEcommerceSystem.repository.RoleRepository;
 import com.example.WaterEcommerceSystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.authentication.PasswordEncoderParser;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -12,6 +14,8 @@ import java.util.Set;
 
 @Service
 public class UserService {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository userRepository;
@@ -37,7 +41,7 @@ public class UserService {
         adminUser.setFirstName("admin");
         adminUser.setLastName("admin");
         adminUser.setUserName("admin123");
-        adminUser.setPassword("admin@pass");
+        adminUser.setPassword(getEncodedPassword("admin@pass"));
         adminUser.setEmail("hendrymwamburi@gmai.com");
         Set<Role> adminRoles=new HashSet<>();
         adminRoles.add(adminRole);
@@ -48,12 +52,16 @@ public class UserService {
         user.setFirstName("hendry");
         user.setLastName("mwamburi");
         user.setUserName("hendry123");
-        user.setPassword("hendry@pass");
+        user.setPassword(getEncodedPassword("hendry@pass"));
         user.setEmail("hendrymwamburi@gmai.com");
         Set<Role> userRoles=new HashSet<>();
         adminRoles.add(userRole);
         user.setRoles(userRoles);
         userRepository.save(user);
+
+    }
+    public String getEncodedPassword(String password){
+        return passwordEncoder.encode(password);
 
     }
 }
