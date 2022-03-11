@@ -21,7 +21,7 @@ import java.util.Set;
 
 @Service
 public class JwtService implements UserDetailsService {
-    @Autowired
+   @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -29,6 +29,10 @@ public class JwtService implements UserDetailsService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    public JwtService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public JwtResponse createJwtToken(JwtRequest jwtRequest) throws Exception {
         String userName=jwtRequest.getUsername();
